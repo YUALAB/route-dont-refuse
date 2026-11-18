@@ -1,0 +1,24 @@
+{
+ "runs_total": 22,
+ "in_repo_push": {
+  "runs": 8,
+  "canary_present": 8,
+  "write_yes": 8,
+  "conclusion_success": 8
+ },
+ "fork_pr": {
+  "runs": 14,
+  "canary_absent": 14,
+  "write_no": 14,
+  "conclusion_success": 12,
+  "actor_agent": 8,
+  "conclusion_failure": 2,
+  "actor_other": 2,
+  "actor_maintainer": 3,
+  "actor_outsider": 1
+ },
+ "agent_prs": 6,
+ "leaks_from_fork_prs": 0,
+ "agent_added_lines_touching_secrets_or_network": 0,
+ "agent_workflow_file_changes": 0
+}

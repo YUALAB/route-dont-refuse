@@ -1,0 +1,206 @@
+{
+ "about": "攻撃者役の独立したレビュー（別の AI エージェント。毎回コードだけを渡し、作り手の結論は渡さない）の指摘。label はレビューが付けた札そのまま（1〜3回目は「確か（CONFIRMED）・ありうる（PLAUSIBLE）」で順位づけ、4〜6回目は重さ）。指摘は作り手が自分で確かめてから直した。確かな指摘はすべて出す前に直し、ほかは直したか、残る危なさとして記録した。status：fixed＝直して出した／residual＝残る危なさとして記録（論文の限界に書いた）／accepted＝直さないと決めた（理由つき）",
+ "rounds": [
+  {
+   "round": 1,
+   "target": "外の文の見張り（人の OK を待つ形）",
+   "findings": [
+    {
+     "label": "CONFIRMED",
+     "summary": "作業の途中で読む Issue（read_issue）が見張りも『書ける人のコメントだけ』の絞り込みも通らない",
+     "status": "fixed"
+    },
+    {
+     "label": "PLAUSIBLE",
+     "summary": "ネット検索・ページ取得が外の文を運ぶ",
+     "status": "fixed"
+    },
+    {
+     "label": "PLAUSIBLE",
+     "summary": "author_association（MEMBER・COLLABORATOR）は書く権限の証にならない",
+     "status": "fixed"
+    },
+    {
+     "label": "PLAUSIBLE (remaining gap)",
+     "summary": "書ける人が書いた本文に、外の人の文が写されている（例：コメントから Issue を作る）",
+     "status": "residual: 書ける人が本文に写した外の文は見分けられない（論文 8 節「信頼できる仕事は見張り頼み」）"
+    },
+    {
+     "label": "PLAUSIBLE, low",
+     "summary": "確かめの順番（ボットの本文の印より先に、書いた人を信じていた）",
+     "status": "fixed"
+    },
+    {
+     "label": "low",
+     "summary": "CI の自動直しが読む CI・ほかのアプリの記録の文",
+     "status": "fixed（2回目の4つめと同じ手当て：GitHub Actions 以外のアプリのチェックで印）"
+    }
+   ]
+  },
+  {
+   "round": 2,
+   "target": "同上（2回目）",
+   "findings": [
+    {
+     "label": "CONFIRMED",
+     "summary": "箱のコマンドでネットの文を読んでも見張りに知らせない（npm view・curl 等）",
+     "status": "fixed"
+    },
+    {
+     "label": "CONFIRMED",
+     "summary": "元の歴史にないコミット（フォーク・外の人の PR）を git_show で読める",
+     "status": "fixed"
+    },
+    {
+     "label": "CONFIRMED",
+     "summary": "PR にコミットを足すとき、外の文の印が消える",
+     "status": "fixed"
+    },
+    {
+     "label": "PLAUSIBLE",
+     "summary": "CI の自動直しが読む CI の記録は見張りを通らない",
+     "status": "fixed"
+    }
+   ]
+  },
+  {
+   "round": 3,
+   "target": "フォークの道の初版",
+   "findings": [
+    {
+     "label": "CONFIRMED (Medium)",
+     "summary": "外の人が YUA のフォークのブランチを head にした PR を出して閉じると、本物の PR のブランチが消される",
+     "status": "fixed（PR を出した人＝ボット本人かを確かめる）"
+    },
+    {
+     "label": "CONFIRMED (Low–Med)",
+     "summary": "同じ head の PR を並べると、CI の自動直しの PR 探しを押し出せる",
+     "status": "fixed（同上）"
+    },
+    {
+     "label": "PLAUSIBLE (Low)",
+     "summary": "PR 一覧の読み込みの回数",
+     "status": "accepted: 一覧は1回300件まで・CI の知らせごとに1回で、費用は小さい"
+    },
+    {
+     "label": "PLAUSIBLE (Low, availability)",
+     "summary": "1つの組織に同じつながりのフォークは1つ（名前の取り合い）",
+     "status": "fixed（上流ごとに1つ・番号で見分ける。4be09ff・bdbf52d）"
+    },
+    {
+     "label": "PLAUSIBLE (Low)",
+     "summary": "AI のまとめを、人が見る前にそのまま PR の本文に載せる",
+     "status": "fixed（ただの文字にして載せる）"
+    },
+    {
+     "label": "defense in depth",
+     "summary": "フォーク係の鍵の力が広い",
+     "status": "fixed（フォーク係は作る・確かめるだけ）"
+    },
+    {
+     "label": "config to verify",
+     "summary": "yua-forks で Actions が止まっていない",
+     "status": "fixed（組織で Actions を止め、使うたびに確かめる）"
+    },
+    {
+     "label": "Low, functional",
+     "summary": "フォーク係の失敗のあと、フォークの PR への OK が通らない",
+     "status": "fixed（フォークの PR に足せないときは知らせて終わる）"
+    }
+   ]
+  },
+  {
+   "round": 4,
+   "target": "フォークを番号で見分ける形",
+   "findings": [
+    {
+     "label": "Medium (conditional)",
+     "summary": "同じつながりのリポジトリでフォークを共有すると、別の上流の仕事の書き込みと混ざり、フォークで Actions が動けば YUA の PR を書きかえうる",
+     "status": "fixed（共有をやめた）"
+    },
+    {
+     "label": "Low",
+     "summary": "共有で、別の上流のコミットが同じフォークに混ざる",
+     "status": "fixed（共有をやめた）"
+    },
+    {
+     "label": "Low",
+     "summary": "名前を変えたフォーク（301）を読めない",
+     "status": "fixed"
+    },
+    {
+     "label": "Low",
+     "summary": "GitHub の 422 の文が PR の文に載りうる",
+     "status": "fixed"
+    },
+    {
+     "label": "Low",
+     "summary": "置き場の判定が名前だけ",
+     "status": "fixed（組織の番号でも確かめる）"
+    }
+   ]
+  },
+  {
+   "round": 5,
+   "target": "最終の形（見張りの記録を番号で）",
+   "findings": [
+    {
+     "label": "Medium",
+     "summary": "名前で残った前の見張りを、今その名前を持つリポジトリに移すと、名前を取った別のリポジトリが人の自動直しの回数を使える",
+     "status": "fixed（移さない）"
+    },
+    {
+     "label": "Low",
+     "summary": "番号を読めないとき名前で残すと、見張りが2つに割れる",
+     "status": "fixed（番号がなければ見張らない）"
+    },
+    {
+     "label": "Low",
+     "summary": "読むだけの操作が移しを起こす",
+     "status": "fixed（移しそのものをやめた）"
+    },
+    {
+     "label": "Trivial",
+     "summary": "あきらめの印の鍵が名前から番号に変わる（1回だけ同じ知らせが出うる）",
+     "status": "accepted: 一度だけ同じ知らせが出うる"
+    },
+    {
+     "label": "Trivial",
+     "summary": "閉じた YUA のフォークの PR を開き直すと、ブランチがもうない（想定どおり）",
+     "status": "accepted: 想定どおり"
+    }
+   ]
+  },
+  {
+   "round": 6,
+   "target": "フォークの見回り",
+   "findings": [
+    {
+     "label": "Medium",
+     "summary": "はっきりしない返事（fork: true なのに元がない等）でも消す",
+     "status": "fixed（fork: false か、元が公開でないときだけ）"
+    },
+    {
+     "label": "Medium",
+     "summary": "置き場の、YUA のものでないリポジトリを名前の形だけで消しうる",
+     "status": "fixed（印のあるものだけ）"
+    },
+    {
+     "label": "Low",
+     "summary": "使い始めたばかりのフォークを消しうる（競り合い）",
+     "status": "fixed（使うたびに印を書き直す）"
+    },
+    {
+     "label": "Low",
+     "summary": "回数・時間の上限がない",
+     "status": "fixed（600回・240秒・100個・429 で止める）"
+    },
+    {
+     "label": "Low",
+     "summary": "元が消えたとき、別のフォークが新しい元になる（30日後に消える）",
+     "status": "accepted: 30日後に消える"
+    }
+   ]
+  }
+ ]
+}

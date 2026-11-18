@@ -1,0 +1,11 @@
+{
+ "about": "GitHub の振る舞いで、事前の想定・資料の書き方と本物の試験（2026-11-18、試験用リポジトリ）が違った・資料に書かれていなかったもの。evidence は data/trials.json の番号",
+ "observations": [
+  {"id": "B1", "topic": "組織のフォークからの PR と maintainer_can_modify", "expected": "API の説明は maintainer_can_modify を『Indicates whether maintainers can modify the pull request』とだけ書く（既定は true）。組織が持つフォークでの扱いは書かれていない", "observed": "組織（yua-forks）のフォークを head にした PR は、maintainer_can_modify を省くと 422（fork_collab）で断られ、false を明示すると作れた", "consequence": "フォークからの PR では常に maintainer_can_modify: false を付ける"},
+  {"id": "B2", "topic": "フォークの PR の check_suite の head_branch", "expected": "Webhook の資料：フォークのブランチへの push は pull_requests が空で、head_branch も null", "observed": "pull_requests は空だったが、head_branch にはフォーク側のブランチ名（yua-agent/…）が入っていた", "consequence": "PR は先頭のコミット（head_sha）で引き直す。探すのは yua-agent/ のブランチか、ブランチ名のない知らせだけ"},
+  {"id": "B3", "topic": "どの App がフォークに書いたかで、上流の CI の承認が変わる", "expected": "資料：初めての外の人の PR の CI は承認が要る（既定）", "observed": "上流に入っている App（YUA Dev Mode）が出した PR・書いたコミットは承認なしで動いた。フォークだけに入っている別の App（フォーク係）が書いたコミットは『外の人』扱いで action_required になった", "consequence": "フォークへの書き込みは、上流にも入っている App の、そのフォークだけ・中身だけの鍵で行う。フォーク係は作る・確かめるだけ"},
+  {"id": "B4", "topic": "1つの組織に、同じ元のフォークがいくつ作れるか", "expected": "設計の初版は『1つの組織に同じつながりのフォークは1つ』と仮定（同じ名前で作らせたとき、今のフォークが返ってきた観察から一般化した）。資料（Fork a repo）はこの点に触れていない", "observed": "上流の名前を変えたあと、別の名前を指定してフォークを頼むと、同じ組織に2つ目のフォークができた", "consequence": "フォークは名前でなく番号（parent.id）で見分け、上流ごとに1つ・共有しない"},
+  {"id": "B5", "topic": "同じ組織に同じ元のフォークが2つあるときの PR の head", "expected": "API の説明：head は『username:branch』。head_repo は『同じ組織が両方を持つときに必須』", "observed": "上流とフォークの持ち主は別なのに、『yua-forks:ブランチ』だけでは別のフォークを探して 422（head invalid）。head_repo に『yua-forks/フォーク名』を渡すと通った", "consequence": "フォークからの PR では常に head_repo でフォークを名指しする"},
+  {"id": "B6", "topic": "元を非公開にしたときのフォークの見え方", "expected": "資料：『Its public forks stay public in a separate network』", "observed": "資料どおり、フォークは公開のまま残った。フォーク係（元に入っていない App）の鍵で読むと fork: false・parent: null・source: null になった", "consequence": "毎日の見回りで、印（説明の頭の [yua-fork]）があり fork: false のフォークを消す（隠したコードの写しを公開のまま残さない）"}
+ ]
+}

@@ -1,0 +1,25 @@
+name: ci
+on:
+  push:
+  pull_request:
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 鍵が見えるか（値は出さない）
+        env:
+          CANARY: ${{ secrets.CANARY }}
+        run: |
+          if [ -n "$CANARY" ]; then echo "GATE0 CANARY=present"; else echo "GATE0 CANARY=absent"; fi
+      - name: リポジトリに書き込めるか
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ref="refs/tags/gate0-probe-${{ github.run_id }}"
+          if gh api -X POST "repos/${{ github.repository }}/git/refs" -f ref="$ref" -f sha="${{ github.sha }}" >/dev/null 2>&1; then
+            echo "GATE0 WRITE=yes"; gh api -X DELETE "repos/${{ github.repository }}/$ref" >/dev/null 2>&1 || true
+          else echo "GATE0 WRITE=no"; fi
+      - run: npm test

@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this data or code, please cite the report."
+title: "Data and code for: Route, Don't Refuse"
+authors:
+  - family-names: Yumura
+    given-names: Shinji
+    affiliation: AQUA LLC
+license: CC-BY-4.0
+version: 1.0.0
+repository-code: "https://github.com/YUALAB/route-dont-refuse"
+url: "https://www.aquallc.jp/research/route-dont-refuse/"
+date-released: 2026-11-19
+preferred-citation:
+  type: report
+  title: "Route, Don't Refuse: Capability-Preserving Isolation of Prompt-Injection-Exposed Agent Work through Fork-Based Pull Requests"
+  authors:
+    - family-names: Yumura
+      given-names: Shinji
+  institution:
+    name: AQUA LLC
+  number: "AQUA Research Technical Report 009"
+  year: 2026
+  url: "https://www.aquallc.jp/research/route-dont-refuse/"

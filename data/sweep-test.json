@@ -1,0 +1,10 @@
+{
+ "about": "S8：毎日の見回り（フォークを消す）の本物での試験の記録（2026-11-18 13:15〜13:30 UTC）。使い捨ての公開リポジトリ YUALAB/yua-fork-sweep-test（いまは非公開）を、フォーク係の鍵で置き場にフォークしてから、元を非公開にした。値は、作業中に表示した結果を写したもの（試験のあと、そのフォークは消えたので、collect.mjs では取り直せない）。keeper_view はフォーク係の鍵で読んだフォークの見え方",
+ "steps": [
+  {"step": "元が公開のとき", "keeper_view": {"fork": true, "parent": "YUALAB/yua-fork-sweep-test", "parent_private": false}},
+  {"step": "元を非公開にしたあと", "keeper_view": {"fork": false, "parent": null, "source": null}},
+  {"step": "見回り（消さずに見るだけ）・フォークに印なし", "result": {"checked": 5, "deleted": [], "errors": 0}, "note": "印のない切り離されたフォークは消さない"},
+  {"step": "フォークに印（説明の頭に [yua-fork]）を付けてから見回り（本当に消す）", "result": {"checked": 5, "deleted": [{"name": "YUALAB--yua-fork-sweep-test", "why": "元のリポジトリから切り離された（元が非公開になった・消えた）"}], "errors": 0}},
+  {"step": "そのあとの置き場", "repos": ["YUALAB--yua-fork-gate0", "YUALAB--yua-fork-gate0-renamed", "outsider--yua-fork-gate0", "YUALAB--yua-fork-gate0-k"], "note": "使っている4つは残った。消したフォークは 404"}
+ ]
+}
